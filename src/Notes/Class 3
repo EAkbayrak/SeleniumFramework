@@ -1,0 +1,39 @@
+
+--- Architecture of Framework ---
+
+These are the following packages we create in our Framework
+
+-Java
+    - utils - to keep all the utilities of our project such as constants
+        -in the following classes (CommonMethods,ConfigReader, Constants)
+        -CommonMethod class extends PageInitialize
+
+    - steps - all the step definition can be found here, they're the codes for the steps found in the feature
+              file
+
+    - pages - this is for POM (Page Object Model) all pages extends CommonMethods
+            - PageInitializer class - this is used to initialize all the page classes
+            - example below
+             @FindBy(id = "btnLogin")
+             public WebElement loginButton;
+
+            - runners
+                RunnerClass example below
+                @RunWith(Cucumber.class)
+                @CucumberOptions(
+                        //features we use to provide the path of all the features file
+                        features = "src/test/resources/features/SearchEmployee.feature",
+                        glue = "steps"
+                )
+                public class RunnerClass {
+
+                }
+
+
+
+
+-resources (None-code)
+    - config -
+        -config.properties (class) - this is used to hold relevant information like url/username/password
+
+    - features - this is the Gherkin steps of manual testing (Given, When, And, Then)

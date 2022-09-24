@@ -1,0 +1,9 @@
+
+    2 types of data tables
+    with headers - list of maps
+    without headers - list
+
+    Excel file - spreadsheet
+    1) Is get the file path in the constants class within utils package
+    2) Create a class in Utils called ExcelReader
+    3)

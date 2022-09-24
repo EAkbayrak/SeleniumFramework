@@ -1,0 +1,45 @@
+Hooks vs Background
+
+Hooks are applicable to all feature files
+Background is applicable to just on feature file
+
+Hooks execute first then background executes and in the end hooks
+executes again as post condition
+
+Hooks are for pre and post condition @after and @before
+
+Within the runner class you can have the following,
+**********************************************************************************************
+@RunWith(Cucumber.class)
+@CucumberOptions(
+        //features we use to provide the path of all the features file
+        features = "src/test/resources/features/",
+
+        //You can use tags to groups tests together, you can have have multiple tags,
+        tags = "@smoke", tags= "@Sprint23"
+
+
+        glue = "steps",
+
+        // set dryRun to true to quickly execute the code, and it will tell you if there's
+        // any steps that need to be implemented
+
+
+        dryRun = false,
+
+        // keeping monochrome to true will clean you console output for cucumber
+        // test if it has irrelevant or unreadable character in it
+        monochrome = true
+
+        plugin = {"pretty", "html:target/cucumber.html"}
+
+        // "pretty" will create a report showing a log of every execution in the target folder, the target folder
+        is automatically generated
+
+        // "html" will create the report as a html file
+
+
+
+************************************************************************************************
+
+

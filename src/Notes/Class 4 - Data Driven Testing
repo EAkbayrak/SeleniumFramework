@@ -1,0 +1,21 @@
+What is data driven testing?
+
+Test that can run on different data?
+    - When we execute our script against multiple sets of data
+
+When using Data Driven Testing then you need to do the following
+
+Within the feature file, you need to write
+
+Scenario Outline: instead of just Scenario
+
+ @dataprovider
+      Scenario Outline: Adding multiple employees from cucumber feature file
+        When user enters "<firstName>", "<middleName>", "<lastName>"
+        And clicks save button
+        Then employee added successfully
+        Examples:
+        |firstName    |middleName     |lastName|
+        |romid        |MS             |ZARIF   |
+        |EMRET        |MS             |GULCAN  |
+        |MAMA         |TARINDI        |BABACAN |

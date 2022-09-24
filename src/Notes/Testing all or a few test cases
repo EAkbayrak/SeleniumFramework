@@ -1,0 +1,104 @@
+There's a few option on how to run tests on cucumber
+
+You can create a runners package and within that runners package, have a
+runners class, inside that runners class you have the following options
+to pick which tests you'd like to run and how you'd like to run it
+
+
+There's another way to run all the tests in cucumber however, you will have to
+do this by using the POM.XML file, and before you do that, you have to install
+the Maven Surefire Plugin
+
+
+Rerun plugin - we use this plugin in runner class to capture the details of failed
+test cases during execution and then we use failed runner class to execute only failed
+test cases.
+
+within the POM.xml file you add the code in the following area,
+
+We use incldes tag to run our runner class
+** means src folder and /* means runner package and then file name
+******************************************************************************
+    <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M7</version>
+                    <configuration>
+                        <includes>
+                            <include>**/*RunnerClass.java</include>
+                        </includes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>net.masterthought</groupId>
+                    <artifactId>maven-cucumber-reporting</artifactId>
+                    <version>5.7.1</version>
+                    <executions>
+                        <execution>
+                            <id>execution</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                            <configuration>
+                                <projectName>Cucumber</projectName>
+                                <!-- optional, per documentation set this to "true" to bypass generation of Cucumber Reports entirely, defaults to false if not specified -->
+                                <!-- output directory for the generated report -->
+                                <outputDirectory>${project.build.directory}</outputDirectory>
+                                <!-- optional, defaults to outputDirectory if not specified -->
+                                <inputDirectory>${project.build.directory}/jsonReports</inputDirectory>
+                                <jsonFiles>
+                                    <!-- supports wildcard or name pattern -->
+                                    <param>**/*.json</param>
+                                </jsonFiles>
+                                <!-- optional, defaults to outputDirectory if not specified -->
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+
+*******************************************************************************
+
+
+Example below - of a runners class
+*********************************************************************
+
+package runners;
+
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
+import org.junit.runner.RunWith;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+        //features we use to provide the path of all the features file
+        features = "src/test/resources/features/",
+
+        glue = "steps",
+
+        // set dryRun to true to quickly execute the code, and it will tell you if there's
+        // any steps that need to be implemented
+        dryRun = true,
+
+        // keeping monochrome to tru will clean you console output for cucumber
+        // test if it has irrelevant or unreadable character in it
+        monochrome = true,
+
+        tags = "@regression",
+
+
+        plugin = {"pretty", "html:target/cucumber.html", "json:target/cucumber.json"}
+
+)
+
+public class RegressionRunner {
+
+
+}
+
+*********************************************************************
+

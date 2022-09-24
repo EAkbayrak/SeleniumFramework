@@ -1,0 +1,120 @@
+
+
+Before you start the framework
+You need to make sure you have the right dependencies, the dependencies within the POM.xml file is where all the
+maven repository are held. You'll need the selenium, cucumber and maven repositories
+
+1)  Delete the main folder, that's used for testing and we never touch that as testers so its worth not having it all
+    together
+
+2)  Create a folder called resources within the TEST folder
+
+3) within the TEST Folder
+there are 2 sub folders
+java        -   in this are is all the Java related folders
+resources   -   all the non-java related resources
+
+4)  Within the resources folder you are going to create the following folders
+
+4a) within the resource folder you create a "features" folder to store the feature files in
+
+    - login.feature this is testing a feature within the software
+
+    In this are you create feature files that will be written in gherkin to test a feature, example below
+    Feature: login feature
+
+    Scenario: valid Admin login
+    Given user is navigated to specified URL
+    When user enters a valid username and password
+    And clicks on login button
+    Then the user is able to see the message Welcome Admin
+Runners class is from JUnit and not part of cucumber but it helps run our cucumber steps
+
+4b) config package
+Within the config package, you will create a config.properties file that will store all the public static final attributes of data that will or shouldn't change
+
+Example:
+browser =  chrome
+url = http://hrm.syntaxtechs.net/humanresources/symfony/web/index.php/auth/login
+username = Admin
+password = Hum@nhrm123
+
+4c) testData Package
+the test data package will keep the excel files that you're working on or pulling data from
+Example:
+book1.xlsx
+
+5) Now in the java package you will create the following packages
+
+5a) pages - within the pages package you will keep all the pages of the websites as classes and webelements within pages
+in this package, example.
+    i)      AddEmployeePage
+
+    @FindBy(id="firstName")
+        public WebElement firstName;
+
+
+    ii)     DashboardPage
+    iii)    EmployeeInformationPage
+
+    v)      PageInitializer - this will be used to initialize all the pages example below
+
+    public class PageInitializer {
+        public static LoginPage login;
+     public static void initializePageObjects(){
+            login = new LoginPage();
+      }
+    }
+
+
+5b) And create a runners package and a runner class within that package
+    Inside the runners class you can use the following to filter through which feature you want to run
+    SUBJECT             MEANING                                             EXAMPLE
+    1) features         Location of which feature you want to run           "src/test/resources/feature"
+    2) glue             This runs the steps you are implementing            ""
+    3) monochrome
+    4) dryrun
+    5) tags "@smoke"
+
+5c) steps - IMPORTANT any step class that's created, you must extend it to CommonMethods
+
+Now create a steps package within the java package and create a class with a name that will logically coincide with the feature file
+
+If you have a want to run the feature file of login.feature then you should create a file within steps called loginSteps
+This is where your gherkin sentence turns into code, example below
+
+@When("user enters firstname, middle name and last name")
+    public void user_enters_firstname_middle_name_and_last_name() {
+
+        sendText(addEmployee.firstName, "Emre");
+        sendText(addEmployee.middleName,"Huseyin");
+        sendText(addEmployee.lastName,"Akbayrak");
+    }
+
+5d) utils - in this package you create the following classes
+    1)  CommonMethods extends PageInitializer
+
+    You use CommonMethods like click, sendKeys, closeBrowser,
+
+    2)  ConfigReader
+       static Properties properties;
+
+    This is to read properties file
+
+    3)  Constants - in this class you hold all variables that are not going to change examples below
+
+    public class Constants {
+
+        public static final String CONFIGURATION_FILEPATH =
+                System.getProperty("user.dir") + "/src/test/resources/config/config.properties";
+        public static final int IMPLICIT_WAIT = 10;
+        public static final int EXPLICIT_WAIT = 20;
+
+        public static final String SCREENSHOT_FILEPATH = System.getProperty("user.dir")+"/screenshots/";
+
+        public static final String TEST_DATA_FILEPATH = System.getProperty("user.dir")+"/src/test/resources/testData/Book1.xlsx";
+
+    4)  ExcelReader - as the name suggests method to read excel files
+
+
+

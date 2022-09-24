@@ -1,0 +1,86 @@
+The process of of creating a class that will read the excel file
+
+
+1) The first thing you need to do is first get the location and open it
+
+BELOW INSTANCE VARIABLE
+
+    static Workbook book;
+    static Sheet sheet;
+
+
+WE USE FILEINPUTSTREAM TO READ THE FILE
+
+   public static void openExcel(String filePath){
+           //opening the excel file
+           try {
+               FileInputStream fis = new FileInputStream(filePath);
+               book = new XSSFWorkbook(fis);
+           } catch (FileNotFoundException e) {
+               //to get exception if file is not available
+               e.printStackTrace();
+           } catch (IOException e) {
+               //to get exception if input or output is not upto the mark
+               e.printStackTrace();
+           }
+       }
+
+2) Now we need to figure out what sheet we want to work with because there could be many sheets
+
+The following is the way to pick the sheet
+
+ public static void getSheet(String sheetName){
+        // it will identify the sheet we are going to read from excel file
+        sheet = book.getSheet(sheetName);
+    }
+
+3) Now we have the sheet we need to read the data in sheet, we do the following,
+
+3a) get the physical number of rows
+    public static int getRowCount(){
+        //it will return total rows having the data
+        return sheet.getPhysicalNumberOfRows();
+    }
+
+3b) Now we need to figure out how many columns each row has
+
+    public static int getColsCount(int rowIndex){
+        //it will return total number of columns from every row
+        return sheet.getRow(rowIndex).getPhysicalNumberOfCells();
+    }
+
+3c) Now this is the last part that will help in reading the whole file
+
+        public static String getCellData(int rowIndex, int colIndex){
+            return sheet.getRow(rowIndex).getCell(colIndex).toString();
+        }
+
+4) This is the code that will integrate all the above code together and read the data
+
+ public static List<Map<String, String>> excelListIntoMap
+            (String filePath, String sheetName){
+
+        openExcel(filePath);
+        getSheet(sheetName);
+
+        List<Map<String, String>> listData = new ArrayList<>();
+
+        //outer loop
+        //it takes care of total rows in excel file
+        //it will read the values from all thr rows
+        for (int row =1; row<getRowCount(); row++){
+
+            //create a map every row
+            Map<String, String> map = new LinkedHashMap<>();
+            //looping through all the values of the cell
+            for (int col=0; col<getColsCount(row); col++){
+                //it will add keys and values
+                //0 index for row and col variable so that we get all the keys
+                map.put(getCellData(0,col), getCellData(row, col));
+            }
+            listData.add(map);
+        }
+
+
+        return listData;
+    }

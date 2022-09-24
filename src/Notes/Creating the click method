@@ -1,0 +1,16 @@
+Inside the commonMethods class create the following
+
+public static WebDriverWait getWait(){
+        WebDriverWait wait = new WebDriverWait(driver, constants.EXPLICIT_WAIT);
+        return wait;
+    }
+
+
+    public static void waitForClickability(WebElement element){
+        getWait().until(ExpectedConditions.elementToBeClickable(element));
+    }
+
+    public static void click(WebElement element){
+        waitForClickability(element);
+        element.click();
+    }

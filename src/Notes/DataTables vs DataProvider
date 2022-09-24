@@ -1,0 +1,25 @@
+
+
+Data Tables vs Data Provider
+
+
+Use Data Table if...
+Instead of opening the website and logging in everytime to add multiple users to a system
+you log in once and then add multiple people to the system.
+
+DataTable only executes once whereas for Data provider it will execute multiple times
+
+
+Example of Data Provider
+ Scenario Outline:adding multiple employee from cucumber feature file
+      When user enters "<firstName>", "<middleName>" and "<lastName>"
+      And click on save Btn
+      Then Employee is added "<firstName>", "<middleName>" and "<lastName>"
+
+      Examples:
+      |firstName    |middleName   |lastName |
+      |empak        |can          |gulermi  |
+      |canlar       |canim        |guler    |
+      |kimin        |cani         |gulerdi  |
+
+
